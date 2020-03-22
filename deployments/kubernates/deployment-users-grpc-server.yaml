@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-server-deployment
+  labels:
+    app: users-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: users-server
+  template:
+    metadata:
+      labels:
+        app: users-server
+    spec:
+      containers:
+      - name: users-server
+        image: mikegolovanov/grpc-users-server:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 7777
