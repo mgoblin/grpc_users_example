@@ -40,8 +40,8 @@ test:
 	go tool cover -html=docs/coverage.out -o docs/coverage.html
 
 build: proto wsdl gendocs test
-	go build -o bin/users_client cmd/client/users_client_main.go
-	go build -o bin/users_server cmd/server/users_server_main.go 
+	go build -o bin/users_client cmd/client/main.go
+	go build -o bin/users_server cmd/server/main.go 
 	go build -o bin/users_idgen cmd/id_generator/main.go
 	go build -o bin/users_web cmd/web_client/main.go
 
