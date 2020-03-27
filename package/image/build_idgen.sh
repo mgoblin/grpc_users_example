@@ -2,21 +2,21 @@
 
 # Run this script: buildah unshare ./build.sh
 
-echo "Build server image using buildah"
+echo "Build idgen image using buildah"
 
 BUILDAH_HISTORY=true
-NAME=docker.io/mikegolovanov/grpc-users-server
+NAME=docker.io/mikegolovanov/idgen
 VERSION=1.0 
 
 container=$(buildah from alpine)
 echo "Create container $container"
 mnt=$(buildah mount $container)
 echo "Mount container filesystem to $mnt"
-buildah copy $container bin/users_server /
+buildah copy $container bin/users_idgen /
 buildah umount $container
 
-buildah config --entrypoint "/users_server" $container
-buildah config --port 7777 $container 
+buildah config --entrypoint "/users_idgen" $container
+buildah config --port 8080 $container 
 img=$(buildah commit $container $NAME:$VERSION)
 
 buildah tag $NAME:$VERSION $NAME:lastest

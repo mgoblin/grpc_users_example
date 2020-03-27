@@ -1,6 +1,6 @@
 include .env
 
-#MAKEFLAGS += --silent
+MAKEFLAGS += --silent
 PROJECTNAME=$(shell basename "$(PWD)")
 
 PROTOS_DIR=$(PWD)/api/proto/v1
@@ -10,7 +10,7 @@ PROTOC_GEN=protoc -I. -I${PROTOS_DIR} ${PROTOS}
 .PHONY: all
 
 all: clean build kubernates
-	$(info build server and client binaries)
+	$(info build done)
 clean:
 	go clean
 	rm -f bin/users_client
@@ -49,6 +49,7 @@ kubernates: image
 
 image:
 	buildah unshare ./package/image/build_grpc_users.sh
+	buildah unshare ./package/image/build_idgen.sh
 
 install:
 	@echo "deploy to minikube"
