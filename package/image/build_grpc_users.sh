@@ -12,7 +12,7 @@ container=$(buildah from alpine)
 echo "Create container $container"
 mnt=$(buildah mount $container)
 echo "Mount container filesystem to $mnt"
-buildah copy $container ./users_server /
+buildah copy $container bin/users_server /
 buildah umount $container
 
 buildah config --entrypoint "/users_server" $container

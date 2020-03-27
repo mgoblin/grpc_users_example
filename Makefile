@@ -1,6 +1,6 @@
 include .env
 
-MAKEFLAGS += --silent
+#MAKEFLAGS += --silent
 PROJECTNAME=$(shell basename "$(PWD)")
 
 PROTOS_DIR=$(PWD)/api/proto/v1
@@ -30,9 +30,10 @@ proto:
 	${PROTOC_GEN} --go_out=plugins=grpc:internal
 
 wsdl:
+	$(info Generate wsdl go code)
 	wsdl2go -i api/wsdl/math.wsdl \
 	  -o internal/api/wsdl/v1/math_service.wsdl.go \
-	  -p v1
+	  -p v1  
 	
 test: 
 	go test ${MODULE}/internal/... -coverprofile=docs/coverage.out
@@ -47,7 +48,7 @@ build: proto wsdl gendocs test
 kubernates: image
 
 image:
-	buildah unshare ./package/image/build.sh
+	buildah unshare ./package/image/build_grpc_users.sh
 
 install:
 	@echo "deploy to minikube"
