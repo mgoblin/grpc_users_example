@@ -21,7 +21,7 @@ buildah config --port $TCP_PORT $container
 
 img=$(buildah commit $container)
 
-buildah tag $NAME:$VERSION
+buildah tag $img $NAME:$VERSION
 echo "Create image $img done"
  
 buildah login -u mikegolovanov $REGISTRY

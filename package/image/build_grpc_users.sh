@@ -2,26 +2,30 @@
 
 # Run this script: buildah unshare ./build.sh
 
-echo "Build server image using buildah"
+echo "Build grpc users server image using buildah"
 
 BUILDAH_HISTORY=true
-NAME=docker.io/mikegolovanov/grpc-users-server
-VERSION=1.0 
+REGISTRY=docker.io
+NAME=$REGISTRY/mikegolovanov/grpc-users-server
+VERSION=1.0
+SRC_BIN_PATH=bin/users_server
+DEST_BIN_PATH=/server
+TCP_PORT=7777
 
-container=$(buildah from alpine)
+container=$(buildah from scratch)
 echo "Create container $container"
-mnt=$(buildah mount $container)
-echo "Mount container filesystem to $mnt"
-buildah copy $container bin/users_server /
-buildah umount $container
+buildah add $container $SRC_BIN_PATH $DEST_BIN_PATH
 
-buildah config --entrypoint "/users_server" $container
-buildah config --port 7777 $container 
-img=$(buildah commit $container $NAME:$VERSION)
+buildah config --cmd $DEST_BIN_PATH $container
+buildah config --port $TCP_PORT $container 
 
-buildah tag $NAME:$VERSION $NAME:lastest
+img=$(buildah commit $container)
+
+buildah tag $img $NAME:$VERSION
 echo "Create image $img done"
  
-buildah login -u mikegolovanov docker.io
+buildah login -u mikegolovanov $REGISTRY
 buildah push $img $NAME:$VERSION 
-buildah logout docker.io
+buildah logout $REGISTRY
+
+buildah rm $container
