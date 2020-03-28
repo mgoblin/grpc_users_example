@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: idgen-deployment
+  labels:
+    app: idgen
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: idgen
+  template:
+    metadata:
+      labels:
+        app: idgen
+    spec:
+      containers:
+      - name: idgen
+        image: mikegolovanov/idgen:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
