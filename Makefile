@@ -54,4 +54,4 @@ image:
 install:
 	@echo "deploy to minikube"
 	kubectl apply -f \
-		deployments/kubernates/deployment-users-grpc-server.yaml
+		deployments/kubernates/deployment-idgen.yaml
