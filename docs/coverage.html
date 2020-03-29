@@ -62,6 +62,8 @@
 				
 				<option value="file3">mgoblin/users_grpc/internal/users/server/config/config.go (100.0%)</option>
 				
+				<option value="file4">mgoblin/users_grpc/internal/users/server/server.go (75.0%)</option>
+				
 				</select>
 			</div>
 			<div id="legend">
@@ -211,6 +213,59 @@ func getEnvAsInt(name string, defaultVal int) int <span class="cov8" title="1">{
         }</span>
 
         <span class="cov8" title="1">return defaultVal</span>
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package server
+
+import (
+        "context"
+        "log"
+        "os"
+        "os/signal"
+
+        "github.com/fiorix/wsdl2go/soap"
+        "google.golang.org/grpc"
+
+        pbs "mgoblin/users_grpc/internal/api/proto/v1"
+        webservice "mgoblin/users_grpc/internal/api/wsdl/v1"
+        s "mgoblin/users_grpc/internal/service/v1"
+        cfg "mgoblin/users_grpc/internal/users/server/config"
+)
+
+func New(config *cfg.Config) *grpc.Server <span class="cov8" title="1">{
+        grpcServer := grpc.NewServer()
+        log.Printf("gRPC server created")
+
+        soapClient := soap.Client{
+                URL:       config.IdGen.URL,
+                Namespace: webservice.Namespace,
+        }
+        soapService := webservice.NewWsMath(&amp;soapClient)
+
+        server := &amp;s.UserServiceServer{
+                WebService: &amp;soapService,
+        }
+
+        pbs.RegisterUserServiceServer(grpcServer, server)
+        log.Printf("UserServiceServer registered")
+
+        ctx := context.Background()
+
+        c := make(chan os.Signal, 1)
+        signal.Notify(c, os.Interrupt)
+        go func() </span><span class="cov0" title="0">{
+                for range c </span><span class="cov0" title="0">{
+                        // sig is a ^C, handle it
+                        log.Println("shutting down gRPC server...")
+
+                        grpcServer.GracefulStop()
+
+                        &lt;-ctx.Done()
+                }</span>
+        }()
+
+        <span class="cov8" title="1">return grpcServer</span>
 }
 </pre>
 		
