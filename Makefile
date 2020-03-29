@@ -57,3 +57,5 @@ install:
 		deployments/kubernates/deployment-idgen.yaml
 	kubectl apply -f \
 		deployments/kubernates/deployment-users-grpc-server.yaml	
+	kubectl apply -f \
+		deployments/kubernates/services.yaml		
