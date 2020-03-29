@@ -1,7 +1,10 @@
 package server
 
 import (
+	"context"
 	"log"
+	"os"
+	"os/signal"
 
 	"github.com/fiorix/wsdl2go/soap"
 	"google.golang.org/grpc"
@@ -17,7 +20,7 @@ func New(config *cfg.Config) *grpc.Server {
 	log.Printf("gRPC server created")
 
 	soapClient := soap.Client{
-		URL:       "http://127.0.0.1:8080",
+		URL:       config.IdGen.URL,
 		Namespace: webservice.Namespace,
 	}
 	soapService := webservice.NewWsMath(&soapClient)
@@ -28,6 +31,21 @@ func New(config *cfg.Config) *grpc.Server {
 
 	pbs.RegisterUserServiceServer(grpcServer, server)
 	log.Printf("UserServiceServer registered")
+
+	ctx := context.Background()
+
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	go func() {
+		for range c {
+			// sig is a ^C, handle it
+			log.Println("shutting down gRPC server...")
+
+			grpcServer.GracefulStop()
+
+			<-ctx.Done()
+		}
+	}()
 
 	return grpcServer
 }
