@@ -7,19 +7,18 @@ echo "Build idgen image using buildah"
 BUILDAH_HISTORY=true
 REGISTRY=docker.io
 NAME=$REGISTRY/mikegolovanov/idgen
-VERSION=1.0
-SRC_BIN_PATH=bin/users_idgen
-DEST_BIN_PATH=/idgen
+VERSION=1.0 
+
 TCP_PORT=8080
 
 container=$(buildah from scratch)
 echo "Create container $container"
-buildah add $container $SRC_BIN_PATH $DEST_BIN_PATH
+buildah add $container bin/users_idgen /idgen
 
-buildah config --cmd $DEST_BIN_PATH $container
+buildah config --cmd /idgen $container
 buildah config --port $TCP_PORT $container 
 
-img=$(buildah commit $container)
+img=$(buildah commit $container idgen)
 
 buildah tag $img $NAME:$VERSION
 echo "Create image $img done"

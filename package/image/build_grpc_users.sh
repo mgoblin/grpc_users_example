@@ -19,7 +19,7 @@ buildah add $container $SRC_BIN_PATH $DEST_BIN_PATH
 buildah config --cmd $DEST_BIN_PATH $container
 buildah config --port $TCP_PORT $container 
 
-img=$(buildah commit $container)
+img=$(buildah commit $container users_server)
 
 buildah tag $img $NAME:$VERSION
 echo "Create image $img done"

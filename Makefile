@@ -40,16 +40,18 @@ test:
 	go tool cover -html=docs/coverage.out -o docs/coverage.html
 
 build: proto wsdl gendocs test
-	go build -o bin/users_client cmd/client/main.go
-	go build -o bin/users_server cmd/server/main.go 
-	go build -o bin/users_idgen cmd/id_generator/main.go
-	go build -o bin/users_web cmd/web_client/main.go
+	GOOS=linux CGO_ENABLED=0 go build -o bin/users_client cmd/client/main.go
+	GOOS=linux CGO_ENABLED=0 go build -o bin/users_server cmd/server/main.go 
+	GOOS=linux CGO_ENABLED=0 go build -o bin/users_idgen cmd/id_generator/main.go
+	GOOS=linux CGO_ENABLED=0 go build -o bin/users_web cmd/web_client/main.go
 
 kubernates: image
 
-image:
-	buildah unshare ./package/image/build_grpc_users.sh
-	buildah unshare ./package/image/build_idgen.sh
+image: image_users_server image_idgen
+image_users_server:
+	./package/image/build_grpc_users.sh
+image_idgen:	
+	./package/image/build_idgen.sh
 
 install:
 	@echo "deploy to minikube"
