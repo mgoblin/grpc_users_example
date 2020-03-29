@@ -9,21 +9,32 @@ import (
 	"os/signal"
 
 	"github.com/fiorix/wsdl2go/soap"
+	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 
 	pbs "mgoblin/users_grpc/internal/api/proto/v1"
 	webservice "mgoblin/users_grpc/internal/api/wsdl/v1"
 	s "mgoblin/users_grpc/internal/service/v1"
+	config "mgoblin/users_grpc/internal/users/server/config"
 )
 
+// init is invoked before main()
+func init() {
+	// loads values from .env into the system
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
+}
+
 func main() {
-	port := 7777
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
+	conf := config.New()
+
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", conf.UsersServer.TCPPort))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 		return
 	}
-	log.Printf("Listening port %d", port)
+	log.Printf("Listening port %d", conf.UsersServer.TCPPort)
 
 	// create a gRPC server object
 	grpcServer := grpc.NewServer()

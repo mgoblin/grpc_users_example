@@ -16,6 +16,7 @@ require (
 	github.com/gorilla/mux v1.7.4
 	github.com/huandu/xstrings v1.3.0 // indirect
 	github.com/imdario/mergo v0.3.9 // indirect
+	github.com/joho/godotenv v1.3.0
 	github.com/lyft/protoc-gen-validate v0.1.0 // indirect
 	github.com/mitchellh/copystructure v1.0.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.1 // indirect
