@@ -60,6 +60,8 @@
 				
 				<option value="file2">mgoblin/users_grpc/internal/service/v1/user_service.go (81.8%)</option>
 				
+				<option value="file3">mgoblin/users_grpc/internal/users/server/config/config.go (100.0%)</option>
+				
 				</select>
 			</div>
 			<div id="legend">
@@ -158,6 +160,57 @@ func (s *UserServiceServer) generateID() int64 <span class="cov8" title="1">{
         }</span> else<span class="cov8" title="1"> {
                 return int64(*answer.Result)
         }</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package config
+
+import (
+        "os"
+        "strconv"
+)
+
+type UsersServerConfig struct {
+        TCPPort int
+}
+
+type IdGenConfig struct {
+        URL string
+}
+
+type Config struct {
+        UsersServer UsersServerConfig
+        IdGen       IdGenConfig
+}
+
+func New() *Config <span class="cov8" title="1">{
+        url := getEnv("USERS_SERVER_IDGEN_URL", "localhost:8080")
+        port := getEnvAsInt("USERS_SERVER_PORT", 7777)
+        return &amp;Config{
+                UsersServer: UsersServerConfig{
+                        TCPPort: port,
+                },
+                IdGen: IdGenConfig{
+                        URL: url,
+                },
+        }
+}</span>
+
+func getEnv(key string, defaultVal string) string <span class="cov8" title="1">{
+        if value, exists := os.LookupEnv(key); exists </span><span class="cov8" title="1">{
+                return value
+        }</span>
+
+        <span class="cov8" title="1">return defaultVal</span>
+}
+
+func getEnvAsInt(name string, defaultVal int) int <span class="cov8" title="1">{
+        valueStr := getEnv(name, "")
+        if value, err := strconv.Atoi(valueStr); err == nil </span><span class="cov8" title="1">{
+                return value
+        }</span>
+
+        <span class="cov8" title="1">return defaultVal</span>
 }
 </pre>
 		

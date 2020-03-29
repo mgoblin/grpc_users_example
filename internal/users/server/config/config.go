@@ -19,12 +19,14 @@ type Config struct {
 }
 
 func New() *Config {
+	url := getEnv("USERS_SERVER_IDGEN_URL", "localhost:8080")
+	port := getEnvAsInt("USERS_SERVER_PORT", 7777)
 	return &Config{
 		UsersServer: UsersServerConfig{
-			TCPPort: getEnvAsInt("USERS_SERVER_PORT", 7777),
+			TCPPort: port,
 		},
 		IdGen: IdGenConfig{
-			URL: getEnv("USERS_SERVER_IDGEN_URL", "localhost:8080"),
+			URL: url,
 		},
 	}
 }

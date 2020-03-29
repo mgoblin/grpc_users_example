@@ -23,6 +23,7 @@ require (
 	github.com/mwitkow/go-proto-validators v0.3.0 // indirect
 	github.com/pseudomuto/protoc-gen-doc v1.3.1 // indirect
 	github.com/pseudomuto/protokit v0.2.0 // indirect
+	github.com/stretchr/testify v1.3.0
 	github.com/willf/bitset v1.1.10 // indirect
 	golang.org/x/crypto v0.0.0-20200323165209-0ec3e9974c59 // indirect
 	google.golang.org/genproto v0.0.0-20200326112834-f447254575fd // indirect
