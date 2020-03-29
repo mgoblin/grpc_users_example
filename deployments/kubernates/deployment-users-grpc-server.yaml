@@ -20,4 +20,7 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 7777
+        env:
+        - name: USERS_SERVER_IDGEN_URL
+          value: http://idgen-service:8080
         
