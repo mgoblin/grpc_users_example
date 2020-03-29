@@ -1,12 +1,9 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net"
-	"os"
-	"os/signal"
 
 	"github.com/joho/godotenv"
 
@@ -33,21 +30,6 @@ func main() {
 	log.Printf("Listening port %d", conf.UsersServer.TCPPort)
 
 	grpcServer := usersServer.New(conf)
-
-	ctx := context.Background()
-
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	go func() {
-		for range c {
-			// sig is a ^C, handle it
-			log.Println("shutting down gRPC server...")
-
-			grpcServer.GracefulStop()
-
-			<-ctx.Done()
-		}
-	}()
 
 	// start the server
 	if err := grpcServer.Serve(lis); err != nil {
