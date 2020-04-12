@@ -19,7 +19,7 @@ type Config struct {
 }
 
 func New() *Config {
-	port := getEnvAsInt("USERS_WEB_PORT", 9090)
+	port := getEnvAsInt("USERS_WEB_PORT", 8080)
 	userServiceURL := getEnv("USERS_SERVER_URL", "localhost:7777")
 
 	return &Config{

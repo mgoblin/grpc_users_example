@@ -47,11 +47,13 @@ build: proto wsdl gendocs test
 
 kubernates: image
 
-image: image_users_server image_idgen
+image: image_users_server image_idgen iamge_web
 image_users_server:
 	./package/image/build_grpc_users.sh
 image_idgen:	
 	./package/image/build_idgen.sh
+iamge_web:
+	./package/image/build_web.sh
 
 install:
 	@echo "deploy to minikube"
