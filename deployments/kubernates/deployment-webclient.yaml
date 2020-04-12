@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-web-deployment
+  labels:
+    app: users-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: users-web
+  template:
+    metadata:
+      labels:
+        app: users-web
+    spec:
+      containers:
+      - name: users-web
+        image: mikegolovanov/web-users-server:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
