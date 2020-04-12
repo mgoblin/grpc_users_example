@@ -20,3 +20,6 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
+        env:
+        - name: USERS_SERVER_URL
+          value: users-service:7777

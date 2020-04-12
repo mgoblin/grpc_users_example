@@ -26,6 +26,20 @@ spec:
   type: LoadBalancer     
   ports:
     - name: ws
-      protocol: TCP
       port: 8080
+      targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-web-service
+  labels:
+    app: users-web
+spec:
+  selector:
+    app: users-web
+  type: LoadBalancer     
+  ports:
+    - name: http
+      port: 80
       targetPort: 8080
