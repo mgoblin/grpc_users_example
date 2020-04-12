@@ -15,21 +15,17 @@ type indexData struct {
 	Error     error
 }
 
-func IndexHandler() func(w http.ResponseWriter, req *http.Request) {
+func IndexHandler(client v1.UserServiceClient) func(w http.ResponseWriter, req *http.Request) {
 	tmpl, err := template.ParseFiles("web/template/index.html")
 	if err != nil {
 		log.Fatalf("%q", err)
 	}
 
-	address := "localhost:8080"
-
-	c := v1.NewUsersClient(&address)
-
 	return func(w http.ResponseWriter, req *http.Request) {
-		users, err := c.ListUsers()
+		users, err := client.ListUsers()
 
 		data := &indexData{
-			PageTitle: "title",
+			PageTitle: "Users",
 			Users:     users,
 			Error:     err,
 		}

@@ -10,7 +10,8 @@ import (
 )
 
 type UserServiceClient struct {
-	client pbs.UserServiceClient
+	client     pbs.UserServiceClient
+	connection *grpc.ClientConn
 }
 
 func NewUsersClient(address *string) *UserServiceClient {
@@ -19,11 +20,14 @@ func NewUsersClient(address *string) *UserServiceClient {
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
-	defer conn.Close()
 
 	gprcClient := pbs.NewUserServiceClient(conn)
 
-	return &UserServiceClient{client: gprcClient}
+	return &UserServiceClient{client: gprcClient, connection: conn}
+}
+
+func (s *UserServiceClient) Close() {
+	s.connection.Close()
 }
 
 func (s *UserServiceClient) ListUsers() ([]*pbs.User, error) {

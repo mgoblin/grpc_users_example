@@ -8,6 +8,8 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+
+	v1 "mgoblin/users_grpc/internal/service/v1/client"
 )
 
 func main() {
@@ -15,7 +17,12 @@ func main() {
 	r := mux.NewRouter()
 	h := handlers.LoggingHandler(os.Stdout, r)
 
-	r.HandleFunc("/", web.IndexHandler())
+	address := "localhost:7777"
+
+	c := v1.NewUsersClient(&address)
+	defer c.Close()
+
+	r.HandleFunc("/", web.IndexHandler(*c))
 
 	if err := http.ListenAndServe(":8081", h); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("listen: %s\n", err)

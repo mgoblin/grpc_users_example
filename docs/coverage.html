@@ -62,7 +62,7 @@
 				
 				<option value="file3">mgoblin/users_grpc/internal/users/server/config/config.go (100.0%)</option>
 				
-				<option value="file4">mgoblin/users_grpc/internal/users/server/server.go (75.0%)</option>
+				<option value="file4">mgoblin/users_grpc/internal/users/server/server.go (81.2%)</option>
 				
 				</select>
 			</div>
@@ -254,7 +254,7 @@ func New(config *cfg.Config) *grpc.Server <span class="cov8" title="1">{
 
         c := make(chan os.Signal, 1)
         signal.Notify(c, os.Interrupt)
-        go func() </span><span class="cov0" title="0">{
+        go func() </span><span class="cov8" title="1">{
                 for range c </span><span class="cov0" title="0">{
                         // sig is a ^C, handle it
                         log.Println("shutting down gRPC server...")

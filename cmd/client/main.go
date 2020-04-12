@@ -24,4 +24,5 @@ func main() {
 	}
 
 	log.Printf("Create result: <%+v>\n\n", users)
+	c.Close()
 }
