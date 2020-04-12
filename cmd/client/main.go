@@ -1,18 +1,16 @@
 package main
 
 import (
-	"flag"
 	"log"
 
 	v1 "mgoblin/users_grpc/internal/service/v1/client"
+	config "mgoblin/users_grpc/internal/users/client/config"
 )
 
 func main() {
-	address := flag.String(
-		"server",
-		"localhost:7777",
-		"gRPC server in format host:port")
-	flag.Parse()
+
+	cfg := config.New()
+	address := &cfg.UserService.URL
 
 	log.Printf("Server address is %s", *address)
 
